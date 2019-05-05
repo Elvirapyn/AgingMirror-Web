@@ -1,0 +1,1 @@
+/home/fish/下载/精简版facenet/Facenet/final/test/testPic.png 114 111 283 341

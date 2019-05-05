@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>时光幻镜</title>
+    <link rel="stylesheet" href="{% static 'css/index.min.css' %}">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_1091410_zwryxsfgd4.css
+">
+    {#    <link rel="stylesheet" href=.././font-awesome-4.7.0/css/font-awesome.min.css">#}
+    <script src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{% static 'js/index.min.js' %}"></script>
+    <script src="{% static 'js/upload.min.js' %}"></script>
+    <script src="{% static 'js/xfzajax.min.js' %}"></script>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="logo-box">
+            <a href="/"></a>
+        </div>
+        <ul class="nav">
+            <li class="active"><a href="/">首页</a></li>
+            <li><a href="/">背景介绍</a></li>
+            <li><a href="/">关于我们</a></li>
+        </ul>
+        <div class="feedback">
+            <i class="icon-icon_fabu iconfont"></i>
+            <a href="#">信息反馈</a>
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="wrapper">
+        <div class="poster">
+            <div class="banner-group" id="banner-group">
+                <ul class="banner-ul" id="banner-ul">
+                    <span class="arrow left-arrow">‹</span>
+                    <span class="arrow right-arrow">›</span>
+                    <li><a href="#"><img src="{% static 'images/poster1.png' %}" alt=""></a></li>
+                    <li><a href="#"><img src="{% static 'images/poster2.png' %}" alt=""></a></li>
+                    <li><a href="#"><img src="{% static 'images/poster3.jpg' %}" alt=""></a></li>
+                    <li><a href="#"><img src="{% static 'images/poster4.jpg' %}" alt=""></a></li>
+                </ul>
+                <div class="page-control-group">
+                    <ul class="page-control"></ul>
+                </div>
+            </div>
+        </div>
+        <div class="information_box">
+        </div>
+        <div class="sidebar-wrapper"></div>
+    </div>
+    <div class="banner"></div>
+    <div class="upload">
+        {# 被上传的图片 #}
+        <div class="upload_pic" id="upload_box">
+            <img id="preview" width="250" height="300" src="{% static 'images/upload_pic.jpg' %}">
+        </div>
+        <div class="upload_button" id="id_upload_button">
+            {% csrf_token %}
+            {#  ajax上传图片 #}
+
+            <form action="" id="s1">
+                <div class="file-box">
+                    <link rel="stylesheet" href="bootstrap/bootstrap.css">
+                    <link rel="stylesheet" href="bootstrap/bootstrap-theme.css">
+                    <script src="bootstrap/jquery-1.10.2.js"></script>
+                    <script src="bootstrap/bootstrap.js"></script>
+                    <label class="file-btn" for="upload_avatar">选择图片</label>
+                    <input type="file" accept="image/jpeg,image/png" id="upload_avatar" style="position:absolute;clip:rect(0 0 0 0);">
+                    {#  <input type="file" class="file-btn" id="upload_avatar">选择图片#}
+                </div>
+            </form>
+            {# 图片预浏览 #}
+
+            <script type="text/javascript">
+                $('#upload_avatar').change(function () {
+                    // 获取FileList的第一个元素
+                    {#alert(document.getElementById('upload_avatar').files[0]);#}
+                    var f = document.getElementById('upload_avatar').files[0];
+                    src = window.URL.createObjectURL(f);
+                    document.getElementById('preview').src = src
+                })
+            </script>
+            <p>
+                <button class="Ajax_send" >确认上传</button>
+                <span class="login_error"></span>
+            </p>
+
+            <div id=loading class="loading-css"  style="display:none;" >
+                <progress class="progrss-bar" max='100'></progress>
+                图片处理中
+            </div>
+
+
+
+            <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js "></script>
+            {#<script src="/static/index.js"></script>#}
+            <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+            <script>
+                function foo() {
+                    $(".login_error").html("")
+                }
+
+                $(".Ajax_send").click(function () {
+                    $("#loading").css("display","");
+                    $('.body').css("opacity","0.3");
+                    var formData = new FormData();
+                    formData.append("avatar", $("#upload_avatar")[0].files[0]);
+
+                    // ajax请求
+                    $.ajax({
+                        url: "/get_ajax/",
+                        type: "POST",
+                        headers: {"X-CSRFToken": $.cookie('csrftoken')},
+                        data: formData,
+                        contentType: false,
+                        processData: false,
+                        'success':
+                            function (result) {
+                                if (result['code'] === 200) {
+                                    $("#loading").css("display","none");
+                                    $('.body').css("opacity","1");
+                                    var pic_url = result['data']['url'];
+                                    console.log(pic_url);
+                                    var a = document.getElementById("return_pic_box");
+                                    if (a.innerHTML != "") {
+                                        //清空div中已有的图片
+                                        $("#return_pic_box").empty();
+                                    }
+                                    var Img = document.createElement("img");     //创建一个img元素        
+                                    Img.src = pic_url;   //给img元素的src属性赋值  
+                                    Img.setAttribute("height", 300);
+                                    /*Img.setScale(300,250);*/
+                                    Img.setAttribute("width", 250);
+                                    var myp = document.getElementById('return_pic_box'); //获得dom对象        
+                                    myp.appendChild(Img);    //为dom添加子元素img
+                                    console.log("成功啦");
+                                }
+                            }
+                    })
+
+                })
+            </script>
+        </div>
+        <div class="return_pic" id="return_pic_box">
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="top-group">
+        <div class="top-inner-group">
+            <div class="logo-box">
+
+            </div>
+            <div class="detail-group">
+                <div class="line1">
+                    <ul class="links">
+                        <li><a href="#">关于时光幻镜</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="line2">
+                    <p class="address">地址：北京市海淀区北太平庄街道北京邮电大学软件学院</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
+
+

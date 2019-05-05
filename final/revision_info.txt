@@ -1,0 +1,7 @@
+arguments: /home/fish/下载/精简版facenet/Facenet/final/Final.py /home/fish/下载/精简版facenet/Facenet/20180408-102900 /home/fish/下载/精简版facenet/Facenet/in/cly/girl1.jpg
+--------------------
+tensorflow version: 1.10.0
+--------------------
+git hash: b''
+--------------------
+b''

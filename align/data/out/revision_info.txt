@@ -1,0 +1,7 @@
+arguments: /home/fish/下载/精简版facenet/Facenet/align/align_dataset_mtcnn.py /home/fish/下载/精简版facenet/Facenet/align/data/lfw /home/fish/下载/精简版facenet/Facenet/align/data/out --image_size 160 --margin 20 --random_order
+--------------------
+tensorflow version: 1.10.0
+--------------------
+git hash: b''
+--------------------
+b''
